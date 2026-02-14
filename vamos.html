@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¿Una bonita coincidencia?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Crimson+Text:wght@400;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            font-family: 'Crimson Text', serif;
+            color: #2d3436;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Partículas flotantes de fondo */
+        .background-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+
+        .heart-bg {
+            position: absolute;
+            font-size: 30px;
+            animation: floatHeart 20s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Tarjeta principal */
+        .letter-card {
+            background: linear-gradient(145deg, #ffffff, #fff5f9);
+            border-radius: 25px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        0 0 100px rgba(255, 182, 193, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decoración de esquinas */
+        .letter-card::before,
+        .letter-card::after {
+            content: '❤️';
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.15;
+        }
+
+        .letter-card::before {
+            top: 20px;
+            left: 20px;
+            animation: heartbeat 2s infinite;
+        }
+
+        .letter-card::after {
+            bottom: 20px;
+            right: 20px;
+            animation: heartbeat 2s 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        /* Título */
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            text-align: center;
+            color: #c44569;
+            margin-bottom: 40px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b9d, transparent);
+            margin: 20px auto 0;
+        }
+
+        /* Contenido de la carta */
+        .letter-content {
+            font-size: 20px;
+            line-height: 2;
+            color: #2d3436;
+            text-align: justify;
+            text-justify: inter-word;
+            margin-bottom: 30px;
+        }
+
+        .letter-content p {
+            margin-bottom: 25px;
+            animation: slideIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+        }
+
+        /* Firma */
+        .signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #c44569;
+            margin-top: 40px;
+            animation: fadeIn 2s ease 1s both;
+        }
+
+        .signature .heart {
+            display: inline-block;
+            color: #ff1744;
+            animation: heartPulse 1.5s infinite;
+            font-size: 36px;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        /* Control de música */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .music-control:active {
+            transform: scale(0.95);
+        }
+
+        .music-control.playing {
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Indicador de música */
+        .music-indicator {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .music-indicator.show {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter-card {
+                padding: 35px 25px;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .letter-content {
+                font-size: 18px;
+                line-height: 1.8;
+            }
+
+            .signature {
+                font-size: 28px;
+            }
+
+            .music-control {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .music-indicator {
+                bottom: 80px;
+                right: 20px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .letter-card {
+                padding: 25px 20px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .letter-content {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .signature {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Corazones de fondo -->
+    <div class="background-hearts" id="backgroundHearts"></div>
+
+    <!-- Audio de fondo -->
+    <audio id="backgroundMusic" loop>
+        <source src="quiero.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <div class="letter-card">
+            <h1 class="title">¿Una bonita coincidencia?</h1>
+            
+            <div class="letter-content">
+                <p>Hola Karla, llegó la hora de que veas la segunda continuación de esta carta. Esta no tiene mucha animación ni efectos bonitos, pero sí palabras sinceras...</p>
+
+                <p>Sé que no tiene mucho de que nos conocemos, pero solo bastó coincidir unos minutos para poder atraer mi atención de manera inmediata, y cada vez que te conozco más y más, el amor que siento por ti va aumentando. Tienes algo que considero que te hace destacar ante mis ojos. Sé que no hace falta que lo diga, pero eres muy bonita, me gustan tus ojos, tus expresiones, tus ocurrencias, tu humor, tu sonrisa... Sé que quizás no puedo ser el único que te diga eso, quizás incluso yo no sea tu tipo y puede ser válido, pero amaría poder conocerte, poder tener algo más allá que una amistad.</p>
+
+                <p>Hoy es 14 de febrero, día de San Valentín para muchos. Sé que quizás no te agrade tanto esta fecha, pero, ammm, sería bonito poder pasarlo contigo. En fin, no sabes los nervios que siento al estar escribiendo esto, nunca me había aventado tanto, y honestamente soy consciente de esto pero aquí estoy. No sé qué ocurra en un futuro, no sé qué será de mí o de ti, pero yo estoy dispuesto a esperarte si me lo permitieras. No sería un adiós, sino un hasta luego. Bien dicen que lo bueno tarda en llegar, pero no tardaría mucho. Perooo, también hay probabilidad de que estés conociendo a alguien más, aunque espero no sea el caso, pero si lo fuera, fuck, no regresaría a Chilpo la verdad.</p>
+
+                <p>Aún no sé por lo que pasaste, pero joder, considero que eres una chica top sabes. Amo todo lo que sé de ti, amo tu voz, y perdón si cuando nos veamos te volteo a ver mucho, honestamente te estuve extrañando mucho y no sabes lo mucho que quise verte al día siguiente de ir al gym o llamarte. Dios, amo tu cabello, me gusta la pigmentación de tu piel, de tus mejillas. No soy nadie para estar diciendo lo que deberías o no hacer con tu vida, pero creo que haríamos bonita pareja, ammmm, algo me lo dice sabes. Aún no sé qué problemas tuviste con tu ex, pero estoy seguro que ambos sufrimos cosas similares y aprendimos de eso de manera dolorosa. Por ende, siento, sabes, que seríamos bonita pareja, de solo pensarlo me pone feliz y sé que no debo ilusionarme.</p>
+
+                <p>No sé si te lo había dicho, pero llevo 9 meses solo. He visto ir y venir a innumerables chicas durante toda mi trayectoria, en el gym, en mi trabajo, mientras camino, y realmente no presto atención, no es como que me llamen la atención cualquier chica, pero cuando te vi y comencé a entrenar contigo, empecé a verte a detalle y me puse nervioso, mi corazón latió más de lo normal (y no fue el pre por si lo preguntas), y cada vez la idea fue clara: me flechaste. Solo bastó un par de horas para enamorarme de ti, amé toda tu existencia y no tuve que esperar días para apreciar la maravillosa persona que eres, lo que me mostraste, amé.</p>
+
+                <p>Ahora, el tipo de amor que yo poseo es mucho de contacto físico, mucho de dar cosas, de decirte palabras bonitas a cada rato y siempre buscando conocerte, aprender de ti, y demás. Quizás tu manera de amar sea distinta a esto, pero si en un futuro me dieras una oportunidad, créeme, sé lo que puedo dar, lo que puedo sentir, y considero que no te decepcionaría el amor que puedo llegar a dar, lo que puedo brindarte. Y créeme que si fuera así, yo le echaría más ganas para poder tener un mejor puesto y poder volver a Chilpo por ti e irnos juntos. (Sé que esto ya suena muy a futuro, pero si fuera así, sería todo o nada conmigo, no me gustaría tenerte solo para un rato, sino para a muy, muuuuuy largo plazo).</p>
+
+                <p>¿Te acuerdas cuando te dije que parecías fresa? Es porque, ammm, sin afán de juzgar, te ves de alto valor, tu mera existencia lo dice. Amo cómo te miras, y amaría poder apoyarte en todo, crecer juntos. Sé que quizás no soy el más guapo, el más alto, el más inteligente, el mejor sacando temas de conversación, pero si me dieras la oportunidad, podría amarte de una manera bonita sabes...</p>
+
+                <p>Me gustas mucho Karla, y no tuve que esperar meses para saberlo, con un día bastó para que, de entre cientos de chicas con las que me crucé, tú llamaras por completo mi atención. Me gustas y me gustaría poder tener algo contigo, conocernos, crecer, comer a diferentes lugares, pero sobre todo, apoyarte y amarte como mereces...</p>
+
+                <p>Y si tan solo me das una pizca de que el sentimiento es mutuo, puedo prometer volver por ti una vez que triunfe, para triunfar ambos y vivir una vida bonita en la que solo nos tengamos que preocupar por tener un gatito y un lugar bonito donde vivir...</p>
+
+                <p>Dicen que las cosas pasan por algo, y si te conoci antes de irme, fue por algo, solo espero que sea para algo bonito, pero, si decides que eso no es lo mejor, lo entenderé, solo quiero que seas feliz, y si alguien más puede hacerlo, entonces me daría felicidad, porque tu mereces todo el mundo y nada menos que eso..., feliz san valentin pequeñita ajonjoli peciosa, bonita, guapa y chula, espero esto te haya alegrado un poco el día, cuidate mucho y no olvides lo valiosa que eres.</p>
+
+                <p>Te quiero mucho Karla y espero tengas un lindo día, hoy, mañana y siempre.</p>
+            </div>
+
+            <div class="signature">
+                Te quiero <span class="heart">❤️</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Control de música -->
+    <button class="music-control" id="musicControl" title="Reproducir música">
+        🎵
+    </button>
+
+    <div class="music-indicator" id="musicIndicator">
+        Click para reproducir música 🎵
+    </div>
+
+    <script>
+        // Generar corazones de fondo
+        function createBackgroundHearts() {
+            const container = document.getElementById('backgroundHearts');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-bg';
+                heart.textContent = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                heart.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Control de música
+        const music = document.getElementById('backgroundMusic');
+        const musicControl = document.getElementById('musicControl');
+        const musicIndicator = document.getElementById('musicIndicator');
+        let isPlaying = false;
+
+        // Mostrar indicador al cargar la página
+        setTimeout(() => {
+            musicIndicator.classList.add('show');
+            setTimeout(() => {
+                musicIndicator.classList.remove('show');
+            }, 3000);
+        }, 1000);
+
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicControl.textContent = '🎵';
+                musicControl.classList.remove('playing');
+                musicIndicator.textContent = 'Música pausada 🎵';
+            } else {
+                music.play();
+                musicControl.textContent = '⏸️';
+                musicControl.classList.add('playing');
+                musicIndicator.textContent = 'Reproduciendo... 🎶';
+            }
+            isPlaying = !isPlaying;
+            
+            musicIndicator.classList.add('show');
+            setTimeout(() => {
+                musicIndicator.classList.remove('show');
+            }, 2000);
+        });
+
+        // Intentar reproducir automáticamente (algunos navegadores lo bloquean)
+        window.addEventListener('load', () => {
+            music.play().then(() => {
+                isPlaying = true;
+                musicControl.textContent = '⏸️';
+                musicControl.classList.add('playing');
+                musicIndicator.textContent = 'Reproduciendo... 🎶';
+                musicIndicator.classList.add('show');
+                setTimeout(() => {
+                    musicIndicator.classList.remove('show');
+                }, 2000);
+            }).catch(() => {
+                // Si falla la reproducción automática, mostrar indicador
+                console.log('Reproducción automática bloqueada');
+            });
+        });
+
+        // Animar la aparición de párrafos
+        const paragraphs = document.querySelectorAll('.letter-content p');
+        paragraphs.forEach((p, index) => {
+            p.style.animationDelay = (index * 0.1) + 's';
+        });
+
+        // Inicializar
+        createBackgroundHearts();
+    </script>
+</body>
+</html>
