@@ -34,7 +34,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 80px;
+            padding-top: 100px;
         }
 
         /* Estrellas brillantes */
@@ -196,11 +196,11 @@
         }
 
         .letter-body p {
-            font-size: 16px;
+            font-size: 18px;
             line-height: 1.8;
             color: var(--text-dark);
-            margin-bottom: 20px;
-            text-align: justify;
+            margin-bottom: 15px;
+            text-align: center;
             animation: fadeInUp 0.8s ease forwards;
             opacity: 0;
         }
@@ -208,7 +208,6 @@
         .letter-body p:nth-child(1) { animation-delay: 0.2s; }
         .letter-body p:nth-child(2) { animation-delay: 0.4s; }
         .letter-body p:nth-child(3) { animation-delay: 0.6s; }
-        .letter-body p:nth-child(4) { animation-delay: 0.8s; }
 
         @keyframes fadeInUp {
             to {
@@ -262,6 +261,12 @@
         }
 
         .qr-code img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .qr-code canvas {
             width: 100%;
             height: 100%;
             border-radius: 10px;
@@ -359,7 +364,7 @@
             transform: rotate(90deg);
         }
 
-        /* Girasoles flotantes (debajo de las flores) */
+        /* Corazones flotantes (debajo de las flores) */
         .floating-hearts {
             position: fixed;
             width: 100%;
@@ -1561,23 +1566,6 @@
     <!-- Estrellas -->
     <div class="stars" id="starsContainer"></div>
 
-    <!-- Música de fondo -->
-    <audio id="backgroundMusic" loop>
-        <source src="Letra.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Control de música -->
-    <button id="musicToggle" style="position: fixed; top: 15px; right: 15px; z-index: 1000; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.3); transition: all 0.3s ease;">
-        🔊
-    </button>
-
-    <!-- Título superior -->
-    <div style="position: fixed; top: 15px; left: 50%; transform: translateX(-50%); z-index: 2; text-align: center;">
-        <h1 style="font-family: 'Great Vibes', cursive; font-size: 28px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); margin: 0; letter-spacing: 1px;">
-            Para Karla, de JCHF
-        </h1>
-    </div>
-
     <!-- Contenedor principal -->
     <div class="main-container">
         <!-- Sobre -->
@@ -1885,7 +1873,7 @@
         </div>
     </div>
 
-    <!-- Girasoles flotantes (DEBAJO de las flores) -->
+    <!-- Corazones flotantes (DEBAJO de las flores) -->
     <div class="floating-hearts" id="floatingHearts"></div>
 
     <!-- Modal de la carta -->
@@ -1917,7 +1905,7 @@
                 
                 <div class="qr-container">
                     <div class="qr-code locked" id="qrCode">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect fill='white' width='200' height='200'/%3E%3Cpath fill='black' d='M10,10h30v30h-30zM50,10h10v10h-10zM70,10h10v10h-10zM90,10h10v10h-10zM110,10h10v10h-10zM160,10h30v30h-30zM10,50h10v10h-10zM30,50h10v10h-10zM50,50h10v10h-10zM70,50h10v10h-10zM90,50h10v10h-10zM110,50h10v10h-10zM130,50h10v10h-10zM160,50h10v10h-10zM180,50h10v10h-10zM10,70h10v10h-10zM30,70h10v10h-10zM50,70h10v10h-10zM90,70h10v10h-10zM130,70h10v10h-10zM160,70h10v10h-10zM180,70h10v10h-10zM10,90h10v10h-10zM30,90h10v10h-10zM70,90h10v10h-10zM110,90h10v10h-10zM130,90h10v10h-10zM160,90h10v10h-10zM180,90h10v10h-10zM10,110h10v10h-10zM50,110h10v10h-10zM70,110h10v10h-10zM90,110h10v10h-10zM130,110h10v10h-10zM150,110h10v10h-10zM170,110h10v10h-10zM10,130h30v10h-30zM50,130h10v10h-10zM70,130h10v10h-10zM90,130h10v10h-10zM110,130h10v10h-10zM130,130h10v10h-10zM160,130h30v10h-30zM10,160h30v30h-30zM50,160h10v10h-10zM70,160h10v10h-10zM90,160h10v10h-10zM110,160h10v10h-10zM130,160h10v10h-10zM160,160h30v30h-30zM50,180h10v10h-10zM70,180h10v10h-10zM90,180h10v10h-10zM110,180h10v10h-10z'/%3E%3C/svg%3E" alt="QR Code">
+                        <!-- El QR se generará aquí dinámicamente -->
                     </div>
                     <div class="lock-overlay" id="lockOverlay">🔒</div>
                 </div>
@@ -1928,45 +1916,19 @@
                 </div>
 
                 <div class="unlocked-message" id="unlockedMessage">
-                    ✨ ¡El código QR está desbloqueado! ✨
+                    ✨ ¡El código QR está desbloqueado! Escanéalo para continuar ✨
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Librería QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
         // Activar animaciones al cargar
         window.onload = () => {
             document.body.classList.remove("not-loaded");
-            
-            // Intentar reproducir música automáticamente
-            const music = document.getElementById('backgroundMusic');
-            const musicToggle = document.getElementById('musicToggle');
-            
-            // Intentar reproducir automáticamente
-            music.play().catch(function(error) {
-                console.log("Autoplay bloqueado, esperando interacción del usuario");
-            });
-            
-            // Control de música
-            let isPlaying = true;
-            musicToggle.addEventListener('click', () => {
-                if (isPlaying) {
-                    music.pause();
-                    musicToggle.textContent = '🔇';
-                    isPlaying = false;
-                } else {
-                    music.play();
-                    musicToggle.textContent = '🔊';
-                    isPlaying = true;
-                }
-            });
-
-            // Asegurar que se reproduzca con cualquier clic en la página
-            document.body.addEventListener('click', function playOnFirstClick() {
-                music.play();
-                document.body.removeEventListener('click', playOnFirstClick);
-            }, { once: true });
         };
 
         // Generar estrellas
@@ -1982,14 +1944,14 @@
             }
         }
 
-        // Generar girasoles flotantes (debajo de las flores)
+        // Generar corazones flotantes (debajo de las flores)
         function createHearts() {
             const container = document.getElementById('floatingHearts');
             
             setInterval(() => {
                 const heart = document.createElement('div');
                 heart.className = 'heart-particle';
-                heart.textContent = '🌻';
+                heart.textContent = '❤️';
                 heart.style.left = Math.random() * 100 + '%';
                 heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
                 heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
@@ -1998,6 +1960,21 @@
 
                 setTimeout(() => heart.remove(), 12000);
             }, 1000);
+        }
+
+        // Generar código QR
+        function generateQRCode() {
+            const qrContainer = document.getElementById('qrCode');
+            qrContainer.innerHTML = ''; // Limpiar contenido previo
+            
+            new QRCode(qrContainer, {
+                text: "https://josmarherrera.github.io/ParaKarlaa/vamos.html",
+                width: 200,
+                height: 200,
+                colorDark: "#c44569",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
         }
 
         // Abrir sobre
@@ -2011,6 +1988,10 @@
             
             setTimeout(() => {
                 letterModal.classList.add('active');
+                // Generar QR cuando se abre la carta
+                if (!document.querySelector('#qrCode canvas')) {
+                    generateQRCode();
+                }
             }, 800);
         });
 
